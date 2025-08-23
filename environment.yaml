@@ -1,0 +1,22 @@
+name: ProtoEHR
+
+channels:
+  - nvidia
+  - pytorch
+  - conda-forge
+  - defaults
+
+dependencies:
+  - python=3.11
+  - pytorch
+  - pytorch-cuda
+  - matplotlib
+  - numpy
+  - scipy
+  - scikit-learn
+  - pip
+  - pip:
+    - pyhealth
+    - PyYaml
+    - mlflow
+    - tqdm

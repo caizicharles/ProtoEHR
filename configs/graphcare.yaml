@@ -1,0 +1,69 @@
+dataset: mimiciii
+task: readmission_prediction
+seed: 1
+save_params: True
+save_test: True
+
+triplet_ratio: 6.0
+code_thresh: 100  # 60 for mimiciv
+visit_thresh: 15
+
+train_batch_size: 4
+val_batch_size: 4
+test_batch_size: 4
+max_epoch: 300
+early_stopping_threshold: 20
+early_stopping_indicator: AUPRC
+bootstrap_num: 100
+val_freq: 1
+logging_freq: 50
+
+model:
+  name: GraphCare
+  model_type: baseline
+  mode: train
+  freeze: False
+  args:
+
+start_embed_dim: 128
+hidden_dim: 128
+gnn: BAT
+layer: 3
+decay_rate: 0.01
+patient_mode: joint
+use_alpha: True
+use_beta: True
+edge_attn: True
+
+optimizer:
+  name: Adam
+  args:
+
+lr: 0.001
+weight_decay: 0.
+
+scheduler:
+  name: ExpLR
+  args:
+
+gamma: 0.995
+
+criterion:
+  binary_entropy:
+    reduction: mean
+
+val_metrics:
+  AUPRC:
+    args: None
+
+test_metrics:
+  AUROC:
+    args: None
+  AUPRC:
+    args: None
+  F1:
+    args: None
+
+processed_data_path: ./data/processed
+log_path: ./logs
+pretrained:

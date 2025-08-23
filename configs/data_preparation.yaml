@@ -1,0 +1,71 @@
+dataset: mimiciii
+task: data_preparation-mortality_prediction
+seed: 0
+save_params: True
+
+triplet_ratio: 6.0
+train_proportion: 0.6
+val_proportion: 0.2
+test_proportion: 0.2
+max_epoch: 300
+val_freq: 1
+logging_freq: 10
+
+dataset_filtering:
+  args:
+    age_thresh_low: 18
+    age_thresh_high: 80
+    code_thresh: 100        # 60 for mimiciv
+    visit_thresh: 15
+
+triplet_method: 
+  classifier_data_num: 80000
+  classifier_train_proportion: 0.8
+  classifier_val_proportion: 0.1
+  classifier_test_proportion: 0.1
+  classifier_train_batch_size: 256
+  classifier_val_batch_size: 256
+  classifier_test_batch_size: 256
+  classifier_early_stopping_threshold: 50
+  classifier_early_stoping_indicator: Accuracy
+
+model:
+  name: Triplet_Classifier
+  model_type: base
+  mode: train
+  args:
+    bert_type: regular
+    freeze_bert: True
+    input_dim: 768  # fixed for BERT
+    hidden_dim: 64
+    dropout: 0.1
+
+optimizer:
+  name: Adam
+  args:
+
+lr: 0.001
+weight_decay: 0.
+
+scheduler:
+  name: ExpLR
+  args:
+
+gamma: 0.995
+
+criterion:
+  binary_entropy:
+    reduction: mean
+
+val_metrics:
+  Accuracy:
+    args: None
+
+test_metrics:
+  Accuracy:
+    args: None
+
+raw_data_path: ./data/raw
+processed_data_path: ./data/processed
+log_path: ./logs
+trained_classifier_path: 
